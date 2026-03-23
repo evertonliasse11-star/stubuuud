@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUBUU - Your Study Buddy</title>
+    <meta name="description"
+        content="STUBUU is your personal study companion for focus sessions, task management, and academic resources.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Orbitron:wght@400;500;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="themes.css">
+    <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <button id="theme-toggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <section id="auth-section">
+        <div class="login-container">
+            <h1 class="logo">STUBUU <span>.</span></h1>
+            <p class="tagline">"Give a man a fish, and you feed him for a day; teach a man to fish, and you feed him for
+                a lifetime. -Suhan B."</p>
+
+            <div class="auth-box">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="signin">Sign In</button>
+                    <button class="auth-tab" data-tab="signup">Sign Up</button>
+                </div>
+
+                <!-- Sign In Form -->
+                <div class="auth-form active" id="signin-form">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to continue your journey.</p>
+                    <div class="form-group">
+                        <label for="signin-email">Email</label>
+                        <input type="email" id="signin-email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password">Password</label>
+                        <input type="password" id="signin-password" placeholder="Enter your password">
+                    </div>
+                    <div class="auth-error" id="signin-error"></div>
+                    <button class="btn-primary auth-submit" id="signin-btn">Sign In</button>
+                </div>
+
+                <!-- Sign Up Form -->
+                <div class="auth-form" id="signup-form">
+                    <h2>Create Account</h2>
+                    <p>Join STUBUU and start organizing your studies.</p>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <input type="password" id="signup-confirm" placeholder="Confirm your password">
+                    </div>
+                    <div class="auth-error" id="signup-error"></div>
+                    <button class="btn-primary auth-submit" id="signup-btn">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-small"><i class="fas fa-graduation-cap"></i> <span>STUBUU</span></div>
+                <button id="sidebar-toggle" title="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul>
+                <li class="nav-item active" onclick="showPage('dashboard')">
+                    <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li class="nav-item" onclick="showPage('schedule')">
+                    <a href="#"><i class="fas fa-calendar-alt"></i> Schedule</a>
+                </li>
+                <li class="nav-item" onclick="showPage('resources')">
+                    <a href="#"><i class="fas fa-book-open"></i> Resources</a>
+                </li>
+                <li class="nav-item" onclick="showPage('progress')">
+                    <a href="#"><i class="fas fa-chart-line"></i> Progress</a>
+                </li>
+                <li class="nav-item" onclick="showPage('reflections')">
+                    <a href="#"><i class="fas fa-journal-whills"></i> Reflections</a>
+                </li>
+                <li class="nav-item" onclick="showPage('settings')">
+                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="user-profile" onclick="showPage('settings')">
+                <div id="sidebar-avatar-container" class="avatar-container">
+                    <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff"
+                        alt="User" class="avatar">
+                    <i id="sidebar-avatar-icon" class="fas fa-user avatar-icon" style="display: none;"></i>
+                </div>
+                <span id="sidebar-username">Student</span>
+            </div>
+            <button class="signout-btn" onclick="signOut()">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </button>
+        </nav>
+
+        <main class="main-content">
+
+            <header>
+                <div class="header-row">
+
+                    <div class="greeting">
+                        <h2 id="greeting-text">Welcome, Scholar!</h2>
+                        <div class="quote-wrapper">
+                            <i class="fas fa-quote-left"></i>
+                            <p id="daily-quote">Loading inspiration...</p>
+                        </div>
+                    </div>
+                    <div class="weather-clock-widget">
+                        <div class="clock-display" id="clock-display">00:00</div>
+                        <div class="weather-display" id="weather-display">
+                            <i class="fas fa-cloud"></i>
+                            <span id="weather-text">Checking weather...</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD PAGE -->
+            <div id="page-dashboard" class="page-section active">
+                <div class="dashboard-grid">
+                    <div class="card study-card">
+                        <h3><i class="fas fa-clock"></i> Focus Session</h3>
+                        <div class="timer-settings">
+                            <div class="setting-group">
+                                <label for="focus-subject">Subject:</label>
+                                <select id="focus-subject">
+                                    <option value="Math">Math</option>
+                                    <option value="Science">Science</option>
+                                    <option value="English">English</option>
+                                    <option value="Arts">Arts</option>
+                                    <option value="Other" selected>Other</option>
+                                </select>
+                            </div>
+                            <div class="setting-group">
+                                <label for="timer-duration">Duration:</label>
+                                <select id="timer-duration">
+                                    <option value="15">15 min</option>
+                                    <option value="25" selected>25 min (Pomodoro)</option>
+                                    <option value="45">45 min</option>
+                                    <option value="60">60 min</option>
+                                    <option value="90">90 min</option>
+                                    <option value="120">120 min</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="timer-display" id="timer">25:00</div>
+                        <div class="timer-controls">
+                            <button id="start-timer" class="btn-primary">Start Focus</button>
+                            <button id="reset-timer" class="btn-secondary">Reset</button>
+                        </div>
+                        <div class="session-stats">
+                            <p class="status-text">Sessions today: <span id="sessions-today">0</span></p>
+                            <p class="status-text">Total focus time: <span id="total-focus-time">0h 0m</span></p>
+                        </div>
+                    </div>
+
+                    <div class="card schedule-card">
+                        <h3><i class="fas fa-list-check"></i> Quick Tasks</h3>
+                        <ul class="task-list" id="task-list">
+                        </ul>
+                        <div class="add-task-wrapper">
+                            <div class="task-input-group">
+                                <input type="text" id="new-task-input" placeholder="Add a new task...">
+                                <input type="date" id="task-due-date" title="Due date (optional)">
+                                <button id="add-task-btn"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card ai-card" id="ai-card">
+                        <div class="ai-header">
+                            <h3><i class="fas fa-robot"></i> STU-BOT</h3>
+                            <div class="ai-status">
+                                <span id="ai-connection-status" class="status-dot offline"
+                                    title="Ollama: Disconnected"></span>
+                                <button class="settings-icon" id="toggle-maximize-ai" title="Maximize"><i
+                                        class="fas fa-expand"></i></button>
+                                <button class="settings-icon" id="open-ai-settings"><i class="fas fa-cog"></i></button>
+                            </div>
+                        </div>
+                        <div class="ai-avatar-display" id="ai-avatar-display">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="chat-window" id="chat-window">
+                            <!-- Welcome state — visible until user sends first message -->
+                            <div class="chat-welcome" id="chat-welcome">
+                                <div class="chat-welcome-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <h2 class="chat-welcome-title">Hey! I'm STU-BOT</h2>
+                                <p class="chat-welcome-subtitle">Your AI study companion — ask me anything about your
+                                    studies.</p>
+                                <div class="chat-welcome-chips">
+                                    <span class="welcome-chip"><i class="fas fa-lightbulb"></i> Study Tips</span>
+                                    <span class="welcome-chip"><i class="fas fa-brain"></i> Critical Thinking</span>
+                                    <span class="welcome-chip"><i class="fas fa-calculator"></i> Math Help</span>
+                                    <span class="welcome-chip"><i class="fas fa-flask"></i> Science Q&A</span>
+                                </div>
+                                <div class="chat-suggested-prompts" id="chat-suggested-prompts">
+                                    <button class="suggested-prompt"
+                                        data-prompt="Explain photosynthesis in simple terms">
+                                        <i class="fas fa-seedling"></i> Explain photosynthesis in simple terms
+                                    </button>
+                                    <button class="suggested-prompt"
+                                        data-prompt="Help me understand quadratic equations">
+                                        <i class="fas fa-square-root-alt"></i> Help me understand quadratic equations
+                                    </button>
+                                    <button class="suggested-prompt"
+                                        data-prompt="Give me 5 tips to study more effectively">
+                                        <i class="fas fa-graduation-cap"></i> Give me 5 tips to study more effectively
+                                    </button>
+                                    <button class="suggested-prompt" data-prompt="Summarize the causes of World War II">
+                                        <i class="fas fa-globe-americas"></i> Summarize the causes of World War II
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="message bot-msg">Hi! I'm STU-BOT. Ask me any study question!</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chat-input" placeholder="Ask STU-BOT a study question...">
+                            <button id="send-chat"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCHEDULE PAGE -->
+            <div id="page-schedule" class="page-section">
+                <div class="card full-width-card">
+                    <div class="schedule-header">
+                        <h3><i class="fas fa-calendar-week"></i> Weekly Schedule</h3>
+                        <button id="add-event-btn" class="btn-primary btn-sm"><i class="fas fa-plus"></i> Add
+                            Event</button>
+                    </div>
+                    <p class="subtext">Click on any slot to edit. Changes are saved automatically.</p>
+
+                    <div class="schedule-grid" id="schedule-grid">
+                        <!-- Schedule will be rendered by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESOURCES PAGE -->
+            <div id="page-resources" class="page-section">
+                <div class="card full-width-card">
+                    <div class="resources-header">
+                        <h3><i class="fas fa-book"></i> Study Resources</h3>
+                        <button id="add-resource-btn" class="btn-primary btn-sm"><i class="fas fa-plus"></i> Add
+                            Resource</button>
+                    </div>
+                    <div class="resource-container" id="resource-container">
+                        <!-- Resources will be rendered by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Add Resource Form (Moved to Modal) -->
+            </div>
+
+            <!-- PROGRESS PAGE -->
+            <div id="page-progress" class="page-section">
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-trophy"></i> Achievements</h3>
+                        <div class="badge-container" id="badge-container">
+                            <!-- Badges will be rendered by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-chart-pie"></i> Study Breakdown</h3>
+                        <div class="chart-placeholder">
+                            <div class="bar-chart" id="study-chart">
+                                <!-- Chart will be rendered by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-calendar"></i> Calendar</h3>
+                        <div class="calendar-widget" id="calendar-widget">
+                            <div class="calendar-header">
+                                <button class="calendar-nav-btn" id="prev-month"><i
+                                        class="fas fa-chevron-left"></i></button>
+                                <span class="calendar-month-year" id="calendar-month-year"></span>
+                                <button class="calendar-nav-btn" id="next-month"><i
+                                        class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-weekdays">
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                            </div>
+                            <div class="calendar-days" id="calendar-days">
+                                <!-- Days will be rendered by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card full-span">
+                        <h3><i class="fas fa-calendar-check"></i> Weekly Summary</h3>
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-clock"></i>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="weekly-focus-time">0h 0m</span>
+                                    <span class="stat-label">Focus Time</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="weekly-tasks-completed">0</span>
+                                    <span class="stat-label">Tasks Completed</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-fire"></i>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="current-streak">0</span>
+                                    <span class="stat-label">Day Streak</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-bullseye"></i>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="focus-sessions-count">0</span>
+                                    <span class="stat-label">Focus Sessions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REFLECTIONS PAGE -->
+            <div id="page-reflections" class="page-section">
+                <div class="reflections-header">
+                    <h3><i class="fas fa-journal-whills"></i> Weekly Reflections</h3>
+                    <button id="add-reflection-btn" class="btn-primary btn-sm"><i class="fas fa-plus"></i> Add
+                        Reflection</button>
+                </div>
+                <p class="subtext reflections-subtext">Track your personal achievements, challenges, and goals each
+                    week. Use AI coaching to get actionable suggestions.</p>
+
+                <div class="reflections-container" id="reflections-container">
+                    <!-- Reflections will be rendered by JavaScript -->
+                    <div class="reflections-empty" id="reflections-empty">
+                        <i class="fas fa-feather-alt"></i>
+                        <h4>No reflections yet</h4>
+                        <p>Start journaling your weekly achievements and let AI help you grow!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS PAGE -->
+            <div id="page-settings" class="page-section">
+                <div class="settings-grid">
+                    <!-- Row 1: Profile Settings + AI Settings -->
+                    <div class="card settings-card">
+                        <h3><i class="fas fa-user"></i> Profile Settings</h3>
+                        <div class="form-group">
+                            <label for="settings-name">Display Name</label>
+                            <input type="text" id="settings-name" placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Profile Picture</label>
+                            <div class="avatar-picker-container">
+                                <div class="avatar-preview-large" id="settings-avatar-container">
+                                    <img id="settings-avatar-preview"
+                                        src="https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff"
+                                        alt="Avatar">
+                                    <i id="settings-avatar-icon" class="fas fa-user settings-avatar-icon"
+                                        style="display: none;"></i>
+                                </div>
+
+                                <div class="avatar-customization">
+                                    <!-- Preset Avatars Section -->
+                                    <label class="avatar-section-label">Choose an Avatar</label>
+                                    <div class="preset-avatars" id="preset-avatars">
+                                        <div class="preset-avatar-option selected" data-avatar="initials"
+                                            title="Your Initials">
+                                            <i class="fas fa-font"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-user" title="User">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-user-astronaut"
+                                            title="Astronaut">
+                                            <i class="fas fa-user-astronaut"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-user-graduate"
+                                            title="Graduate">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-user-ninja" title="Ninja">
+                                            <i class="fas fa-user-ninja"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-cat" title="Cat">
+                                            <i class="fas fa-cat"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-dragon" title="Dragon">
+                                            <i class="fas fa-dragon"></i>
+                                        </div>
+                                        <div class="preset-avatar-option" data-avatar="fa-ghost" title="Ghost">
+                                            <i class="fas fa-ghost"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Upload Section -->
+                                    <!-- Color Options -->
+
+                                    <!-- Color Options -->
+                                    <label class="avatar-section-label">Avatar Background Color</label>
+                                    <div class="avatar-colors">
+                                        <button class="color-btn active" data-color="2563eb"
+                                            style="background: #2563eb;"></button>
+                                        <button class="color-btn" data-color="10b981"
+                                            style="background: #10b981;"></button>
+                                        <button class="color-btn" data-color="ef4444"
+                                            style="background: #ef4444;"></button>
+                                        <button class="color-btn" data-color="f59e0b"
+                                            style="background: #f59e0b;"></button>
+                                        <button class="color-btn" data-color="8b5cf6"
+                                            style="background: #8b5cf6;"></button>
+                                        <button class="color-btn" data-color="ec4899"
+                                            style="background: #ec4899;"></button>
+                                        <button class="color-btn" data-color="14b8a6"
+                                            style="background: #14b8a6;"></button>
+                                        <button class="color-btn" data-color="6366f1"
+                                            style="background: #6366f1;"></button>
+                                        <button class="color-btn" data-color="06b6d4"
+                                            style="background: #06b6d4;"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <input type="file" id="avatar-file-input" accept="image/*" style="display: none;">
+                            <button class="btn-secondary" id="upload-avatar-btn">
+                                <i class="fas fa-upload"></i> Upload Picture
+                            </button>
+                            <button id="save-profile-btn" class="btn-primary">Save Profile</button>
+                            <span class="upload-status" id="upload-status"></span>
+                        </div>
+                    </div>
+                    <div class="card settings-card">
+                        <h3><i class="fas fa-robot"></i> AI Settings</h3>
+                        <div class="form-group">
+                            <label for="settings-ai-character">AI Character</label>
+                            <select id="settings-ai-character">
+                                <option value="assistant">Assistant (General Helper)</option>
+                                <option value="advisor">Advisor (Strategic Guidance)</option>
+                                <option value="trainer">Trainer (Practice & Drills)</option>
+                                <option value="teacher">Teacher (Detailed Explanations)</option>
+                                <option value="motivator">Motivator (Encouragement)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-ai-conscience">AI Conscience</label>
+                            <select id="settings-ai-conscience">
+                                <option value="smart">Smart (Detailed Responses)</option>
+                                <option value="moderate">Moderate (Balanced)</option>
+                                <option value="fast">Fast (Quick & Concise)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-ai-provider">AI Provider</label>
+                            <select id="settings-ai-provider">
+                                <option value="ollama">Ollama Models</option>
+                                <option value="puter">Puter.js AI Models</option>
+                            </select>
+                        </div>
+                        <div class="form-group ollama-only-setting">
+                            <label for="settings-ollama-url">Ollama Server URL</label>
+                            <div class="ollama-url-group">
+                                <input type="text" id="settings-ollama-url" value="http://127.0.0.1:11434"
+                                    placeholder="http://127.0.0.1:11434">
+                                <button id="auto-detect-region-btn" class="btn-secondary btn-sm"
+                                    title="Auto-detect regional server">
+                                    <i class="fas fa-location-crosshairs"></i> Auto-detect
+                                </button>
+                            </div>
+                            <p class="subtext" id="ollama-region-label" style="margin-top: 6px; font-size: 0.8rem;"></p>
+                        </div>
+                        <div class="form-group" id="model-dropdown-group">
+                            <label for="settings-ollama-model">Model</label>
+                            <div class="ollama-url-group">
+                                <select id="settings-ollama-model">
+                                    <option value="" disabled>Connect to Ollama to load models...</option>
+                                </select>
+                                <button id="refresh-models-btn" class="btn-secondary btn-sm"
+                                    title="Refresh available models">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group ollama-only-setting">
+                            <button id="test-ollama-btn" class="btn-secondary btn-sm">Test Connection</button>
+                            <span id="ollama-test-result" class="test-result"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Appearance + Timer Settings -->
+                    <div class="card settings-card">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <div class="theme-options">
+                                <button class="theme-btn active" data-theme="light">
+                                    <i class="fas fa-sun"></i> Light
+                                </button>
+                                <button class="theme-btn" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Dark
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-accent">Accent Color</label>
+                            <select id="settings-accent">
+                                <option value="blue">Blue (Default)</option>
+                                <option value="green">Green</option>
+                                <option value="purple">Purple</option>
+                                <option value="orange">Orange</option>
+                                <option value="pink">Pink</option>
+                                <option value="red">Red</option>
+                                <option value="teal">Teal</option>
+                                <option value="indigo">Indigo</option>
+                                <option value="cyan">Cyan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-theme-style">Theme Style</label>
+                            <select id="settings-theme-style">
+                                <option value="default">Default</option>
+                                <option value="neon">Neon Cyberpunk</option>
+                                <option value="nature">Nature Forest</option>
+                                <option value="minimal">Minimal Clean</option>
+                                <option value="retro">Retro Vintage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card settings-card">
+                        <h3><i class="fas fa-clock"></i> Timer Settings</h3>
+                        <div class="form-group">
+                            <label for="settings-default-timer">Default Timer Duration</label>
+                            <select id="settings-default-timer">
+                                <option value="15">15 minutes</option>
+                                <option value="25" selected>25 minutes (Pomodoro)</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                                <option value="90">90 minutes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="settings-sound-enabled" checked>
+                                Play sound when timer ends
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-timezone"><i class="fas fa-globe"></i> Time Zone</label>
+                            <select id="settings-timezone">
+                                <option value="auto">Auto-detect</option>
+                                <optgroup label="Americas">
+                                    <option value="America/New_York">Eastern Time (New York)</option>
+                                    <option value="America/Chicago">Central Time (Chicago)</option>
+                                    <option value="America/Denver">Mountain Time (Denver)</option>
+                                    <option value="America/Los_Angeles">Pacific Time (Los Angeles)</option>
+                                    <option value="America/Anchorage">Alaska (Anchorage)</option>
+                                    <option value="Pacific/Honolulu">Hawaii (Honolulu)</option>
+                                    <option value="America/Toronto">Toronto</option>
+                                    <option value="America/Vancouver">Vancouver</option>
+                                    <option value="America/Mexico_City">Mexico City</option>
+                                    <option value="America/Bogota">Bogotá</option>
+                                    <option value="America/Lima">Lima</option>
+                                    <option value="America/Santiago">Santiago</option>
+                                    <option value="America/Buenos_Aires">Buenos Aires</option>
+                                    <option value="America/Sao_Paulo">São Paulo</option>
+                                </optgroup>
+                                <optgroup label="Europe">
+                                    <option value="Europe/London">London (GMT/BST)</option>
+                                    <option value="Europe/Paris">Paris (CET)</option>
+                                    <option value="Europe/Berlin">Berlin (CET)</option>
+                                    <option value="Europe/Madrid">Madrid (CET)</option>
+                                    <option value="Europe/Rome">Rome (CET)</option>
+                                    <option value="Europe/Amsterdam">Amsterdam (CET)</option>
+                                    <option value="Europe/Zurich">Zurich (CET)</option>
+                                    <option value="Europe/Stockholm">Stockholm (CET)</option>
+                                    <option value="Europe/Athens">Athens (EET)</option>
+                                    <option value="Europe/Helsinki">Helsinki (EET)</option>
+                                    <option value="Europe/Moscow">Moscow (MSK)</option>
+                                    <option value="Europe/Istanbul">Istanbul</option>
+                                </optgroup>
+                                <optgroup label="Africa">
+                                    <option value="Africa/Johannesburg">Johannesburg (SAST)</option>
+                                    <option value="Africa/Cairo">Cairo (EET)</option>
+                                    <option value="Africa/Lagos">Lagos (WAT)</option>
+                                    <option value="Africa/Nairobi">Nairobi (EAT)</option>
+                                    <option value="Africa/Casablanca">Casablanca</option>
+                                </optgroup>
+                                <optgroup label="Asia">
+                                    <option value="Asia/Dubai">Dubai (GST)</option>
+                                    <option value="Asia/Riyadh">Riyadh (AST)</option>
+                                    <option value="Asia/Karachi">Karachi (PKT)</option>
+                                    <option value="Asia/Kolkata">India (IST)</option>
+                                    <option value="Asia/Dhaka">Dhaka (BST)</option>
+                                    <option value="Asia/Bangkok">Bangkok (ICT)</option>
+                                    <option value="Asia/Singapore">Singapore (SGT)</option>
+                                    <option value="Asia/Hong_Kong">Hong Kong (HKT)</option>
+                                    <option value="Asia/Shanghai">Shanghai (CST)</option>
+                                    <option value="Asia/Tokyo">Tokyo (JST)</option>
+                                    <option value="Asia/Seoul">Seoul (KST)</option>
+                                    <option value="Asia/Jakarta">Jakarta (WIB)</option>
+                                </optgroup>
+                                <optgroup label="Oceania">
+                                    <option value="Australia/Sydney">Sydney (AEST)</option>
+                                    <option value="Australia/Melbourne">Melbourne (AEST)</option>
+                                    <option value="Australia/Perth">Perth (AWST)</option>
+                                    <option value="Australia/Brisbane">Brisbane (AEST)</option>
+                                    <option value="Pacific/Auckland">Auckland (NZST)</option>
+                                    <option value="Pacific/Fiji">Fiji</option>
+                                </optgroup>
+                            </select>
+                            <p class="subtext" style="margin-top: 6px; font-size: 0.8rem;">Sets the clock display and
+                                calendar time zone.</p>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Data Management + Language Preference -->
+                    <div class="card settings-card">
+                        <h3><i class="fas fa-database"></i> Data Management</h3>
+                        <div class="data-actions">
+                            <button id="export-data-btn" class="btn-secondary">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                            <button id="import-data-btn" class="btn-secondary">
+                                <i class="fas fa-upload"></i> Import Data
+                            </button>
+                            <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                            <button id="clear-data-btn" class="btn-danger">
+                                <i class="fas fa-trash"></i> Clear All Data
+                            </button>
+                        </div>
+                        <p class="subtext" style="margin-top: 15px;">Export your data to backup tasks, schedule, and
+                            settings. Import to restore.</p>
+                    </div>
+                    <div class="card settings-card">
+                        <h3><i class="fas fa-language"></i> Language Preference</h3>
+                        <div class="form-group">
+                            <label for="settings-language">Display Language</label>
+                            <select id="settings-language">
+                                <option value="en" selected>English (Default)</option>
+                                <option value="fr">Français (French)</option>
+                                <option value="es">Español (Spanish)</option>
+                                <option value="pt">Português (Portuguese)</option>
+                                <option value="de">Deutsch (German)</option>
+                                <option value="zh">中文 (Chinese)</option>
+                                <option value="ja">日本語 (Japanese)</option>
+                                <option value="ko">한국어 (Korean)</option>
+                                <option value="ar">العربية (Arabic)</option>
+                                <option value="hi">हिन्दी (Hindi)</option>
+                                <option value="sw">Kiswahili (Swahili)</option>
+                            </select>
+                        </div>
+                        <div class="language-preview">
+                            <i class="fas fa-globe"></i>
+                            <span id="language-preview-text">Interface language: English</span>
+                        </div>
+                        <p class="subtext" style="margin-top: 10px;">Sets the display language for the website
+                            interface.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </section>
+
+    <!-- AI AVATAR MODAL -->
+    <div id="ai-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Customize STU-BOT</h2>
+            <p>Choose your AI companion's appearance:</p>
+            <div class="avatar-selection">
+                <div class="avatar-option selected" data-icon="fa-robot"><i class="fas fa-robot"></i></div>
+                <div class="avatar-option" data-icon="fa-brain"><i class="fas fa-brain"></i></div>
+                <div class="avatar-option" data-icon="fa-dragon"><i class="fas fa-dragon"></i></div>
+                <div class="avatar-option" data-icon="fa-hat-wizard"><i class="fas fa-hat-wizard"></i></div>
+                <div class="avatar-option" data-icon="fa-user-astronaut"><i class="fas fa-user-astronaut"></i></div>
+            </div>
+            <button id="save-avatar" class="btn-primary" style="width: 100%; margin-top: 20px;">Save</button>
+        </div>
+    </div>
+
+    <!-- ADD EVENT MODAL -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-event-modal">&times;</span>
+            <h2>Add Schedule Event</h2>
+            <div class="form-group">
+                <label for="event-day">Day</label>
+                <select id="event-day">
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                    <option value="sunday">Sunday</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="event-title">Event Title</label>
+                <input type="text" id="event-title" placeholder="e.g., Math Class">
+            </div>
+            <div class="form-group">
+                <label for="event-time">Time</label>
+                <input type="time" id="event-time">
+            </div>
+            <button id="save-event-btn" class="btn-primary" style="width: 100%; margin-top: 20px;">Add Event</button>
+        </div>
+    </div>
+
+    <!-- REFLECTION MODAL -->
+    <div id="reflection-modal" class="modal">
+        <div class="modal-content reflection-modal-content">
+            <span class="close-reflection-modal">&times;</span>
+            <h2 id="reflection-modal-title">Add Weekly Reflection</h2>
+            <div class="form-group">
+                <label for="reflection-week">Week Of</label>
+                <input type="date" id="reflection-week">
+            </div>
+            <div class="form-group">
+                <label for="reflection-achievements"><i class="fas fa-trophy"></i> Achievements & Highlights</label>
+                <textarea id="reflection-achievements" rows="3"
+                    placeholder="What did you accomplish this week? What are you proud of?"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reflection-challenges"><i class="fas fa-bolt"></i> Challenges Faced</label>
+                <textarea id="reflection-challenges" rows="3"
+                    placeholder="What was difficult? What obstacles did you encounter?"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reflection-goals"><i class="fas fa-bullseye"></i> Goals for Next Week</label>
+                <textarea id="reflection-goals" rows="3"
+                    placeholder="What do you want to achieve next week?"></textarea>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-heart"></i> How was your week?</label>
+                <div class="mood-selector" id="mood-selector">
+                    <button class="mood-btn mood-great" data-mood="great" title="Great"><i
+                            class="fas fa-face-grin-stars"></i><span>Great</span></button>
+                    <button class="mood-btn mood-good" data-mood="good" title="Good"><i
+                            class="fas fa-face-smile"></i><span>Good</span></button>
+                    <button class="mood-btn mood-okay" data-mood="okay" title="Okay"><i
+                            class="fas fa-face-meh"></i><span>Okay</span></button>
+                    <button class="mood-btn mood-tough" data-mood="tough" title="Tough"><i
+                            class="fas fa-face-frown"></i><span>Tough</span></button>
+                    <button class="mood-btn mood-struggling" data-mood="struggling" title="Struggling"><i
+                            class="fas fa-face-sad-tear"></i><span>Hard</span></button>
+                </div>
+            </div>
+            <input type="hidden" id="reflection-edit-id" value="">
+            <button id="save-reflection-btn" class="btn-primary" style="width: 100%; margin-top: 20px;">Save
+                Reflection</button>
+        </div>
+    </div>
+
+    <!-- RESOURCE MODAL -->
+    <div id="resource-modal" class="modal">
+        <div class="modal-content reflection-modal-content">
+            <span class="close-resource-modal">&times;</span>
+            <h2 id="resource-modal-title">Add New Resource</h2>
+            <div class="form-group">
+                <label for="resource-name"><i class="fas fa-tag"></i> Name</label>
+                <input type="text" id="resource-name" placeholder="e.g., Khan Academy">
+            </div>
+            <div class="form-group">
+                <label for="resource-desc"><i class="fas fa-align-left"></i> Description</label>
+                <input type="text" id="resource-desc" placeholder="e.g., Free online courses">
+            </div>
+            <div class="form-group">
+                <label for="resource-url"><i class="fas fa-link"></i> URL</label>
+                <input type="url" id="resource-url" placeholder="https://example.com">
+            </div>
+            <div class="form-group">
+                <label for="resource-color"><i class="fas fa-palette"></i> Icon Color</label>
+                <select id="resource-color">
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                    <option value="orange">Orange</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="resource-icon"><i class="fas fa-icons"></i> Icon</label>
+                <select id="resource-icon">
+                    <option value="fa-globe">Globe</option>
+                    <option value="fa-graduation-cap">Graduation Cap</option>
+                    <option value="fa-book">Book</option>
+                    <option value="fa-file-pdf">PDF</option>
+                    <option value="fa-video">Video</option>
+                    <option value="fa-code">Code</option>
+                    <option value="fa-calculator">Calculator</option>
+                </select>
+            </div>
+            <button id="save-resource-btn" class="btn-primary" style="width: 100%; margin-top: 10px;">Save
+                Resource</button>
+            <button id="cancel-resource-btn" class="btn-secondary" style="width: 100%; margin-top: 10px;"
+                onclick="document.getElementById('resource-modal').style.display='none'">Cancel</button>
+        </div>
+    </div>
+
+    <script src="supabase-sync.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

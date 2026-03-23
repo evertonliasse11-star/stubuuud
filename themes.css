@@ -1,0 +1,561 @@
+/* ================================================
+   STUBUU - Theme Styles
+   Separate file for theme customizations
+   ================================================ */
+
+/* ================================================
+   THEME: NEON CYBERPUNK
+   Glowing effects, vibrant neon colors, dark base
+   ================================================ */
+body.theme-neon {
+    --primary-color: #00f0ff;
+    --primary-hover: #00c4d4;
+    --secondary-color: #ff00ff;
+    --bg-color: #0a0a1a;
+    --card-bg: #12122a;
+    --text-main: #e0e0ff;
+    --text-muted: #8080aa;
+    --border-color: #2a2a4a;
+    --success-color: #00ff88;
+    --danger-color: #ff0055;
+    --warning-color: #ffaa00;
+    --shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    --shadow-lg: 0 0 40px rgba(0, 240, 255, 0.4);
+    --radius: 8px;
+    --radius-sm: 4px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+body.theme-neon h1,
+body.theme-neon h2,
+body.theme-neon h3,
+body.theme-neon h4 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+body.theme-neon .timer-display {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 4px;
+}
+
+body.theme-neon select,
+body.theme-neon input,
+body.theme-neon button {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+body.theme-neon .card {
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), inset 0 0 30px rgba(0, 240, 255, 0.05);
+}
+
+body.theme-neon .card:hover {
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 40px rgba(0, 240, 255, 0.1);
+}
+
+body.theme-neon .btn-primary {
+    background: linear-gradient(135deg, #00f0ff, #ff00ff);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+body.theme-neon .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.7), 0 0 60px rgba(255, 0, 255, 0.4);
+}
+
+body.theme-neon .sidebar {
+    background: linear-gradient(180deg, #12122a 0%, #1a1a3a 100%);
+    border-right: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+body.theme-neon .sidebar li.active a {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(255, 0, 255, 0.2));
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+body.theme-neon .logo-small {
+    background: linear-gradient(135deg, #00f0ff, #ff00ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+body.theme-neon .quote-wrapper {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.8), rgba(255, 0, 255, 0.8));
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+}
+
+body.theme-neon .timer-display {
+    background: linear-gradient(135deg, #00f0ff, #ff00ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+}
+
+/* Neon glow animations */
+@keyframes neon-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(0, 240, 255, 0.6);
+    }
+}
+
+body.theme-neon .ai-card {
+    animation: neon-pulse 3s ease-in-out infinite;
+}
+
+/* ================================================
+   THEME: NATURE FOREST
+   Earthy greens/browns, organic shapes, soft shadows
+   ================================================ */
+body.theme-nature {
+    --primary-color: #2d5a27;
+    --primary-hover: #1e3d1a;
+    --secondary-color: #4a7c44;
+    --bg-color: #f5f0e8;
+    --card-bg: #fffef8;
+    --text-main: #2c2416;
+    --text-muted: #6b5b4d;
+    --border-color: #d4c9b8;
+    --success-color: #4a7c44;
+    --danger-color: #a94442;
+    --warning-color: #c4a35a;
+    --shadow: 0 4px 12px rgba(44, 36, 22, 0.1);
+    --shadow-lg: 0 8px 24px rgba(44, 36, 22, 0.15);
+    --radius: 20px;
+    --radius-sm: 12px;
+    font-family: 'Merriweather', Georgia, serif;
+}
+
+body.theme-nature h1,
+body.theme-nature h2,
+body.theme-nature h3,
+body.theme-nature h4 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+}
+
+body.theme-nature .timer-display {
+    font-family: 'Merriweather', Georgia, serif;
+}
+
+body.theme-nature select,
+body.theme-nature input {
+    font-family: 'Merriweather', Georgia, serif;
+    border-radius: 12px;
+}
+
+body.theme-nature button {
+    font-family: 'Merriweather', Georgia, serif;
+    border-radius: 25px;
+}
+
+body.theme-nature .card {
+    border: 1px solid #d4c9b8;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(44, 36, 22, 0.08);
+}
+
+body.theme-nature .card:hover {
+    box-shadow: 0 8px 24px rgba(44, 36, 22, 0.12);
+}
+
+body.theme-nature .btn-primary {
+    background: linear-gradient(135deg, #2d5a27, #4a7c44);
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(45, 90, 39, 0.3);
+}
+
+body.theme-nature .sidebar {
+    background: linear-gradient(180deg, #fffef8 0%, #f5f0e8 100%);
+    border-right: 2px solid #d4c9b8;
+}
+
+body.theme-nature .sidebar li.active a {
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.15), rgba(74, 124, 68, 0.15));
+    border-radius: 15px;
+}
+
+body.theme-nature .logo-small {
+    background: linear-gradient(135deg, #2d5a27, #4a7c44);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+body.theme-nature .quote-wrapper {
+    background: linear-gradient(135deg, #2d5a27, #4a7c44);
+    border-radius: 20px;
+}
+
+body.theme-nature .timer-display {
+    background: linear-gradient(135deg, #2d5a27, #4a7c44);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* Organic leaf animation */
+@keyframes leaf-sway {
+
+    0%,
+    100% {
+        transform: rotate(-2deg);
+    }
+
+    50% {
+        transform: rotate(2deg);
+    }
+}
+
+body.theme-nature .ai-avatar-display i {
+    animation: leaf-sway 4s ease-in-out infinite;
+}
+
+/* Nature dark mode adjustments */
+body.theme-nature.dark-mode {
+    --bg-color: #1a1814;
+    --card-bg: #252219;
+    --text-main: #e8e4d8;
+    --text-muted: #a89f8d;
+    --border-color: #3d3628;
+}
+
+body.theme-nature.dark-mode .sidebar {
+    background: linear-gradient(180deg, #252219 0%, #1a1814 100%);
+    border-right: 2px solid #3d3628;
+}
+
+body.theme-nature.dark-mode .sidebar a {
+    color: #a89f8d;
+}
+
+body.theme-nature.dark-mode .sidebar li.active a {
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.25), rgba(74, 124, 68, 0.25));
+    color: #4a7c44;
+}
+
+body.theme-nature.dark-mode .card {
+    border-color: #3d3628;
+    background: #252219;
+}
+
+/* ================================================
+   THEME: MINIMAL CLEAN
+   Flat design, subtle colors, reduced animations
+   ================================================ */
+body.theme-minimal {
+    --primary-color: #333333;
+    --primary-hover: #1a1a1a;
+    --secondary-color: #666666;
+    --bg-color: #ffffff;
+    --card-bg: #fafafa;
+    --text-main: #1a1a1a;
+    --text-muted: #888888;
+    --border-color: #eeeeee;
+    --success-color: #4caf50;
+    --danger-color: #f44336;
+    --warning-color: #ff9800;
+    --shadow: none;
+    --shadow-lg: none;
+    --radius: 4px;
+    --radius-sm: 2px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body.theme-minimal h1,
+body.theme-minimal h2,
+body.theme-minimal h3,
+body.theme-minimal h4 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+body.theme-minimal .timer-display {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+body.theme-minimal select,
+body.theme-minimal input,
+body.theme-minimal button {
+    font-family: 'Inter', sans-serif;
+    border-radius: 4px;
+}
+
+body.theme-minimal .card {
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+body.theme-minimal .card:hover {
+    box-shadow: none;
+    border-color: #dddddd;
+}
+
+body.theme-minimal .btn-primary {
+    background: #333333;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+body.theme-minimal .btn-primary:hover {
+    background: #1a1a1a;
+    box-shadow: none;
+}
+
+body.theme-minimal .sidebar {
+    background: #fafafa;
+    border-right: 1px solid #eeeeee;
+    box-shadow: none;
+}
+
+body.theme-minimal .sidebar li.active a {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+body.theme-minimal .logo-small {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: #333333;
+    color: #333333;
+}
+
+body.theme-minimal .quote-wrapper {
+    background: #333333;
+    border-radius: 4px;
+}
+
+body.theme-minimal .timer-display {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: #333333;
+    color: #333333;
+}
+
+/* Disable most animations */
+body.theme-minimal * {
+    animation-duration: 0.1s !important;
+    transition-duration: 0.1s !important;
+}
+
+/* Minimal dark mode */
+body.theme-minimal.dark-mode {
+    --bg-color: #1a1a1a;
+    --card-bg: #222222;
+    --text-main: #f0f0f0;
+    --text-muted: #888888;
+    --border-color: #333333;
+    --primary-color: #f0f0f0;
+}
+
+body.theme-minimal.dark-mode .sidebar {
+    background: #222222;
+    border-right: 1px solid #333333;
+}
+
+body.theme-minimal.dark-mode .sidebar a {
+    color: #888888;
+}
+
+body.theme-minimal.dark-mode .sidebar li.active a {
+    background: #333333;
+    color: #f0f0f0;
+}
+
+body.theme-minimal.dark-mode .logo-small {
+    -webkit-text-fill-color: #f0f0f0;
+    color: #f0f0f0;
+}
+
+body.theme-minimal.dark-mode .timer-display {
+    -webkit-text-fill-color: #f0f0f0;
+    color: #f0f0f0;
+}
+
+body.theme-minimal.dark-mode .card {
+    background: #222222;
+    border-color: #333333;
+}
+
+body.theme-minimal.dark-mode .quote-wrapper {
+    background: #f0f0f0;
+    color: #1a1a1a;
+}
+
+/* ================================================
+   THEME: RETRO VINTAGE
+   Warm sepia tones, rounded corners, nostalgic feel
+   ================================================ */
+body.theme-retro {
+    --primary-color: #c45c26;
+    --primary-hover: #a34a1c;
+    --secondary-color: #d4894e;
+    --bg-color: #faf3e8;
+    --card-bg: #fffbf5;
+    --text-main: #3d2914;
+    --text-muted: #8b7355;
+    --border-color: #dcc9b0;
+    --success-color: #6b8e23;
+    --danger-color: #cd5c5c;
+    --warning-color: #daa520;
+    --shadow: 4px 4px 0 rgba(61, 41, 20, 0.15);
+    --shadow-lg: 6px 6px 0 rgba(61, 41, 20, 0.2);
+    --radius: 16px;
+    --radius-sm: 10px;
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+body.theme-retro h1,
+body.theme-retro h2,
+body.theme-retro h3,
+body.theme-retro h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    font-style: italic;
+}
+
+body.theme-retro .timer-display {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+}
+
+body.theme-retro select,
+body.theme-retro input {
+    font-family: 'Playfair Display', Georgia, serif;
+    border-radius: 10px;
+    border-width: 2px;
+}
+
+body.theme-retro button {
+    font-family: 'Playfair Display', Georgia, serif;
+    border-radius: 25px;
+    border-width: 2px;
+}
+
+body.theme-retro .card {
+    border: 2px solid #dcc9b0;
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 rgba(61, 41, 20, 0.1);
+}
+
+body.theme-retro .card:hover {
+    box-shadow: 6px 6px 0 rgba(61, 41, 20, 0.15);
+    transform: translate(-2px, -2px);
+}
+
+body.theme-retro .btn-primary {
+    background: linear-gradient(135deg, #c45c26, #d4894e);
+    border-radius: 25px;
+    box-shadow: 3px 3px 0 rgba(61, 41, 20, 0.3);
+    border: 2px solid #a34a1c;
+}
+
+body.theme-retro .btn-primary:hover {
+    box-shadow: 4px 4px 0 rgba(61, 41, 20, 0.4);
+}
+
+body.theme-retro .sidebar {
+    background: linear-gradient(180deg, #fffbf5 0%, #faf3e8 100%);
+    border-right: 3px solid #dcc9b0;
+}
+
+body.theme-retro .sidebar li.active a {
+    background: linear-gradient(135deg, rgba(196, 92, 38, 0.15), rgba(212, 137, 78, 0.15));
+    border-radius: 12px;
+    border: 1px solid rgba(196, 92, 38, 0.3);
+}
+
+body.theme-retro .logo-small {
+    background: linear-gradient(135deg, #c45c26, #d4894e);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+body.theme-retro .quote-wrapper {
+    background: linear-gradient(135deg, #c45c26, #d4894e);
+    border-radius: 16px;
+    border: 2px solid #a34a1c;
+}
+
+body.theme-retro .timer-display {
+    background: linear-gradient(135deg, #c45c26, #d4894e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-family: 'Courier New', monospace;
+}
+
+/* Retro typewriter effect */
+@keyframes retro-blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+body.theme-retro .ai-status .status-dot.online::after {
+    content: '';
+    animation: retro-blink 1s step-end infinite;
+}
+
+/* Retro dark mode */
+body.theme-retro.dark-mode {
+    --bg-color: #2a1f14;
+    --card-bg: #3d2e1f;
+    --text-main: #f5e6d3;
+    --text-muted: #b8a088;
+    --border-color: #5a4530;
+}
+
+body.theme-retro.dark-mode .sidebar {
+    background: linear-gradient(180deg, #3d2e1f 0%, #2a1f14 100%);
+    border-right: 3px solid #5a4530;
+}
+
+body.theme-retro.dark-mode .sidebar a {
+    color: #b8a088;
+}
+
+body.theme-retro.dark-mode .sidebar li.active a {
+    background: linear-gradient(135deg, rgba(196, 92, 38, 0.3), rgba(212, 137, 78, 0.3));
+    color: #d4894e;
+    border-color: rgba(196, 92, 38, 0.5);
+}
+
+body.theme-retro.dark-mode .card {
+    background: #3d2e1f;
+    border-color: #5a4530;
+}
+
+/* ================================================
+   THEME TRANSITIONS
+   Smooth transitions when switching themes
+   ================================================ */
+body {
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.card,
+.sidebar,
+.btn-primary,
+.btn-secondary {
+    transition: all 0.4s ease;
+}
